@@ -1,0 +1,14 @@
+server:
+  port: 10086 #注册中心端口10086
+spring:
+  application:
+    name: ly-registry #服务名
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka
+    register-with-eureka: false #不向eureka注册自己
+    fetch-registry: false #不拉取服务
+  server:
+    eviction-interval-timer-in-ms: 5000 #清理无效链接
+    enable-self-preservation: false #关闭自我保护
