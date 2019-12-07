@@ -5,8 +5,8 @@ spring:
   application:
     name: item-service
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/ley?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/leyou?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: 123456
 
@@ -20,3 +20,8 @@ eureka:
 
 mybatis:
   type-aliases-package: com.leu.item.pojo
+
+# 打印sql
+logging:
+  level:
+    com.ley.mapper: debug
