@@ -1,5 +1,6 @@
 package com.ly.common.pojo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * @Description: 结果分页
  */
 @Data
+@AllArgsConstructor
 public class PageResult<T> {
     /**
      * 总条数
