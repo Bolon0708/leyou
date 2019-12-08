@@ -56,7 +56,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.ly.common</groupId>
+            <artifactId>ly-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!--  整合rabbitmq -->
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.boot</groupId>-->
