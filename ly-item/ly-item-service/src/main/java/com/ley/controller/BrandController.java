@@ -4,18 +4,18 @@ import com.leu.item.pojo.Brand;
 import com.ley.service.BrandService;
 import com.ly.common.pojo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @ClassName: BrandController
  * @Author: Bolon
  * @Date: 2019/12/8 13:40
- * @Description: TODO
+ * @Description: 品牌controller
  */
 @RestController
 @RequestMapping("brand")
@@ -25,6 +25,7 @@ public class BrandController {
 
     /**
      * 功能描述: 对品牌进行分页查询
+     *
      * @param: [key, page, rows, sortBy, desc]
      * @return: org.springframework.http.ResponseEntity<com.ly.common.pojo.PageResult < com.leu.item.pojo.Brand>>
      * @author: Bolon
@@ -40,5 +41,18 @@ public class BrandController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(pageResult);
+    }
+
+    /**
+     * 功能描述: 品牌新增
+     * @param: [brand, cids]
+     * @return: org.springframework.http.ResponseEntity
+     * @author: Bolon
+     * @date: 2019/12/8 20:46
+     */
+    @PostMapping
+    public ResponseEntity saveBrand(Brand brand, @RequestParam("cids") List<Long> cids) {
+        brandService.saveBrand(brand, cids);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

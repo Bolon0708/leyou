@@ -8,7 +8,10 @@ import com.ly.common.pojo.PageResult;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
+import java.util.List;
 
 /**
  * @ClassName: BrandService
@@ -36,5 +39,19 @@ public class BrandService {
         // 通过设置好的模板进行查询
         Page<Brand> brands = (Page<Brand>) brandMapper.selectByExample(example);
         return new PageResult<>(brands.getTotal(), (long) brands.getPages(), brands);
+    }
+
+    /**
+     * 功能描述: 品牌新增
+     *
+     * @param: [brand, cids]
+     * @return: void
+     * @author: Bolon
+     * @date: 2019/12/8 20:47
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void saveBrand(Brand brand, List<Long> cids) {
+        brandMapper.insertSelective(brand);
+        cids.forEach(cid -> brandMapper.insertCategoryBrand(cid,brand.getId()));
     }
 }
