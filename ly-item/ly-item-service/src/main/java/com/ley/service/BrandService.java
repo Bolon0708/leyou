@@ -54,4 +54,15 @@ public class BrandService {
         brandMapper.insertSelective(brand);
         cids.forEach(cid -> brandMapper.insertCategoryBrand(cid,brand.getId()));
     }
+
+    /**
+     * 功能描述: 根据品牌id查询品牌
+     * @param: [brandId]
+     * @return: com.leu.item.pojo.Brand
+     * @author: Bolon
+     * @date: 2019/12/21 17:23
+     */
+    Brand queryBrandNameByBid(Long brandId) {
+        return brandMapper.selectByPrimaryKey(brandId);
+    }
 }

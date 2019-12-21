@@ -2,12 +2,11 @@ package com.ley.service;
 
 import com.leu.item.pojo.Category;
 import com.ley.mapper.CategoryMapper;
-import com.sun.prism.impl.Disposer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.java2d.cmm.CMSManager;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName: CategoryService
@@ -31,5 +30,17 @@ public class CategoryService {
         Category category = new Category();
         category.setParentId(pid);
         return categoryMapper.select(category);
+    }
+
+    /**
+     * 功能描述: 根据分类id查询分类名称
+     * @param: [cids]
+     * @return: java.util.List<java.lang.String>
+     * @author: Bolon
+     * @date: 2019/12/21 17:20
+     */
+    List<String> queryCategoryNamesByCid(List<Long> cids) {
+        List<Category> categories = categoryMapper.selectByIdList(cids);
+        return categories.stream().map(Category::getName).collect(Collectors.toList());
     }
 }
