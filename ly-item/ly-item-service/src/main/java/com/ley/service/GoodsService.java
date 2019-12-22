@@ -4,17 +4,23 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leu.item.pojo.Brand;
 import com.leu.item.pojo.Spu;
+import com.leu.item.pojo.SpuDetail;
+import com.leu.item.pojo.Stock;
 import com.leu.item.pojo.bo.SpuBo;
 import com.ley.mapper.SkuMapper;
+import com.ley.mapper.SpuDetailMapper;
 import com.ley.mapper.SpuMapper;
+import com.ley.mapper.StockMapper;
 import com.ly.common.pojo.PageResult;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +28,7 @@ import java.util.stream.Collectors;
  * @ClassName: GoodsService
  * @Author: Bolon
  * @Date: 2019/12/21 16:52
- * @Description: TODO
+ * @Description: 商品service
  */
 @Service
 public class GoodsService {
@@ -34,6 +40,10 @@ public class GoodsService {
     private CategoryService categoryService;
     @Autowired
     private BrandService brandService;
+    @Autowired
+    private SpuDetailMapper spuDetailMapper;
+    @Autowired
+    private StockMapper stockMapper;
 
     /**
      * 功能描述: 分页查询商品列表
@@ -72,5 +82,37 @@ public class GoodsService {
         }).collect(Collectors.toList());
         PageInfo<Spu> pageInfo = new PageInfo<>(spus);
         return new PageResult<>(pageInfo.getTotal(), (long) pageInfo.getPages(), collect);
+    }
+
+    /**
+     * 功能描述: 新增商品
+     * @param: [spuBo]
+     * @return: void
+     * @author: Bolon
+     * @date: 2019/12/22 22:52
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void saveGoods(SpuBo spuBo) {
+        //先将数据写入spu表中，数据中缺少saleable，valid,createtime,lastupdatetime
+        spuBo.setSaleable(true);
+        spuBo.setValid(true);
+        spuBo.setCreateTime(new Date());
+        spuBo.setLastUpdateTime(spuBo.getCreateTime());
+        spuMapper.insertSelective(spuBo);
+        //将数据写入spu_detail中
+        SpuDetail spuDetail = spuBo.getSpuDetail();
+        spuDetail.setSpuId(spuBo.getId());
+        spuDetailMapper.insert(spuDetail);
+        //将数据写入sku和stock表中
+        spuBo.getSkus().forEach(sku -> {
+            sku.setSpuId(spuBo.getId());
+            sku.setCreateTime(spuBo.getCreateTime());
+            sku.setLastUpdateTime(spuBo.getCreateTime());
+            skuMapper.insertSelective(sku);
+            Stock stock = new Stock();
+            stock.setSkuId(sku.getId());
+            stock.setStock(sku.getStock());
+            stockMapper.insert(stock);
+        });
     }
 }

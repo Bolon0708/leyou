@@ -1,7 +1,11 @@
 package com.leu.item.pojo.bo;
 
+import com.leu.item.pojo.Sku;
 import com.leu.item.pojo.Spu;
+import com.leu.item.pojo.SpuDetail;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @ClassName: SpuBo
@@ -19,4 +23,10 @@ public class SpuBo extends Spu {
      * 品牌名称
      */
     private String bname;
+    /**
+     * sku列表
+     */
+    private List<Sku> skus;
+
+    private SpuDetail spuDetail;
 }

@@ -4,11 +4,10 @@ import com.leu.item.pojo.bo.SpuBo;
 import com.ley.service.GoodsService;
 import com.ly.common.pojo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @ClassName: GoodsController
@@ -38,5 +37,18 @@ public class GoodsController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(pageResult);
+    }
+
+    /**
+     * 功能描述: 新增商品
+     * @param: [spuBo]
+     * @return: org.springframework.http.ResponseEntity<java.lang.Void>
+     * @author: Bolon
+     * @date: 2019/12/22 22:52
+     */
+    @PostMapping("goods")
+    public ResponseEntity<Void> saveGoods(@RequestBody SpuBo spuBo) {
+        goodsService.saveGoods(spuBo);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
