@@ -46,8 +46,11 @@ public class SpecController {
      * @date: 2019/12/18 21:57
      */
     @GetMapping("params")
-    public ResponseEntity<List<SpecParam>> querySpecParam(@RequestParam("gid") Long gid) {
-        List<SpecParam> specParams = specService.querySpecParams(gid);
+    public ResponseEntity<List<SpecParam>> querySpecParam(@RequestParam(value = "gid", required = false) Long gid,
+                                                          @RequestParam(value = "cid", required = false) Long cid,
+                                                          @RequestParam(value = "searching", required = false) Boolean searching,
+                                                          @RequestParam(value = "generic", required = false) Boolean generic) {
+        List<SpecParam> specParams = specService.querySpecParams(gid, cid, searching, generic);
         if (CollectionUtils.isEmpty(specParams)) {
             return ResponseEntity.notFound().build();
         }

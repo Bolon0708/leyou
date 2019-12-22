@@ -55,4 +55,20 @@ public class BrandController {
         brandService.saveBrand(brand, cids);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    /**
+     * 功能描述: 根据分类cid查询品牌列表
+     * @param: [cid]
+     * @return: org.springframework.http.ResponseEntity<java.util.List<com.leu.item.pojo.Brand>>
+     * @author: Bolon
+     * @date: 2019/12/22 22:02
+     */
+    @GetMapping("cid/{cid}")
+    public ResponseEntity<List<Brand>> queryBrandByCid(@PathVariable("cid") Long cid) {
+        List<Brand> brands = brandService.queryBrandByCid(cid);
+        if (CollectionUtils.isEmpty(brands)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(brands);
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,5 +65,21 @@ public class BrandService {
      */
     Brand queryBrandNameByBid(Long brandId) {
         return brandMapper.selectByPrimaryKey(brandId);
+    }
+
+    /**
+     * 功能描述: 根据分类cid查询品牌列表
+     * @param: [cid]
+     * @return: java.util.List<com.leu.item.pojo.Brand>
+     * @author: Bolon
+     * @date: 2019/12/22 22:04
+     */
+    public List<Brand> queryBrandByCid(Long cid) {
+        List<Long> bids = brandMapper.selectBidByCid(cid);
+        List<Brand> brands = new ArrayList<>();
+        bids.forEach(bid ->
+                brands.add(brandMapper.selectByPrimaryKey(bid))
+        );
+        return brands;
     }
 }

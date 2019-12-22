@@ -38,14 +38,18 @@ public class SpecService {
 
     /**
      * 功能描述: 根据条件查询规格参数
-     * @param: [gid]
+     * @param: [gid, cid, searching, generic]
      * @return: java.util.List<com.leu.item.pojo.SpecParam>
      * @author: Bolon
-     * @date: 2019/12/18 21:57
+     * @date: 2019/12/22 22:14
      */
-    public List<SpecParam> querySpecParams(Long gid) {
+    public List<SpecParam> querySpecParams(Long gid, Long cid, Boolean searching, Boolean generic) {
         SpecParam specParam = new SpecParam();
         specParam.setGroupId(gid);
+        specParam.setCid(cid);
+        specParam.setSearching(searching);
+        specParam.setGeneric(generic);
+        //select方法具有通用性，只有当属性有值时才会根据该属性去查询
         return paramMapper.select(specParam);
     }
 }
