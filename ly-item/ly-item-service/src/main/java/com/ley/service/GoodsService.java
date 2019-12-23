@@ -2,10 +2,7 @@ package com.ley.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.leu.item.pojo.Brand;
-import com.leu.item.pojo.Spu;
-import com.leu.item.pojo.SpuDetail;
-import com.leu.item.pojo.Stock;
+import com.leu.item.pojo.*;
 import com.leu.item.pojo.bo.SpuBo;
 import com.ley.mapper.SkuMapper;
 import com.ley.mapper.SpuDetailMapper;
@@ -22,6 +19,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -114,5 +112,36 @@ public class GoodsService {
             stock.setStock(sku.getStock());
             stockMapper.insert(stock);
         });
+    }
+
+    /**
+     * 功能描述: 根据spuId查询spuDetail
+     * @param: [spuId]
+     * @return: com.leu.item.pojo.SpuDetail
+     * @author: Bolon
+     * @date: 2019/12/23 19:13
+     */
+    public SpuDetail querySpuDetailBySpuId(Long spuId) {
+        return spuDetailMapper.selectByPrimaryKey(spuId);
+    }
+
+    /**
+     * 功能描述: 根据SpuId查询Sku作为回显数据
+     * @param: [id]
+     * @return: java.util.List<com.leu.item.pojo.Sku>
+     * @author: Bolon
+     * @date: 2019/12/23 19:16
+     */
+    public List<Sku> querySkuBySpuId(Long spuId) {
+        Sku sku = new Sku();
+        sku.setSpuId(spuId);
+        List<Sku> skus = skuMapper.select(sku);
+        skus.forEach(sku1 -> {
+            Stock stock = stockMapper.selectByPrimaryKey(sku1.getId());
+            if (!Objects.isNull(stock)) {
+                sku1.setStock(stock.getStock());
+            }
+        });
+        return skus;
     }
 }

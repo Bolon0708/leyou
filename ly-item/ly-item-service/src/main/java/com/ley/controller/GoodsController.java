@@ -1,5 +1,7 @@
 package com.ley.controller;
 
+import com.leu.item.pojo.Sku;
+import com.leu.item.pojo.SpuDetail;
 import com.leu.item.pojo.bo.SpuBo;
 import com.ley.service.GoodsService;
 import com.ly.common.pojo.PageResult;
@@ -8,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @ClassName: GoodsController
@@ -50,5 +55,39 @@ public class GoodsController {
     public ResponseEntity<Void> saveGoods(@RequestBody SpuBo spuBo) {
         goodsService.saveGoods(spuBo);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * 功能描述: 根据spuId查询spuDetail
+     * @param: [spuId]
+     * @return: org.springframework.http.ResponseEntity<com.leu.item.pojo.SpuDetail>
+     * @author: Bolon
+     * @date: 2019/12/23 19:12
+     */
+    //http://api.leyou.com/api/item/spu/detail/184
+    @GetMapping("spu/detail/{spuId}")
+    public ResponseEntity<SpuDetail> querySpuDetailBySpuId(@PathVariable("spuId") Long spuId) {
+        SpuDetail spuDetail = goodsService.querySpuDetailBySpuId(spuId);
+        if (Objects.isNull(spuDetail)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(spuDetail);
+    }
+
+    /**
+     * 功能描述: 根据SpuId查询Sku作为回显数据
+     * @param: [id]
+     * @return: org.springframework.http.ResponseEntity<java.util.List<com.leu.item.pojo.Sku>>
+     * @author: Bolon
+     * @date: 2019/12/23 19:15
+     */
+    //http://api.leyou.com/api/item/sku/list?id=184
+    @GetMapping("sku/list")
+    public ResponseEntity<List<Sku>> querySkuBySpuId(@RequestParam("id") Long spuId) {
+        List<Sku> skus = goodsService.querySkuBySpuId(spuId);
+        if (CollectionUtils.isEmpty(skus)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(skus);
     }
 }
