@@ -58,6 +58,19 @@ public class GoodsController {
     }
 
     /**
+     * 功能描述: 商品修改
+     * @param: [spuBo]
+     * @return: org.springframework.http.ResponseEntity<java.lang.Void>
+     * @author: Bolon
+     * @date: 2019/12/23 21:04
+     */
+    @PutMapping("goods")
+    public ResponseEntity<Void> updateGoods(@RequestBody SpuBo spuBo) {
+        goodsService.updateGoods(spuBo);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
      * 功能描述: 根据spuId查询spuDetail
      * @param: [spuId]
      * @return: org.springframework.http.ResponseEntity<com.leu.item.pojo.SpuDetail>

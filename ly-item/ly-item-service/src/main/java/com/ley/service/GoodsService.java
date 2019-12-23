@@ -64,6 +64,7 @@ public class GoodsService {
             //如果存在，加入根据上下架条件查询
             criteria.andEqualTo("saleable", saleable);
         }
+        example.setOrderByClause("id desc");
         List<Spu> spus = spuMapper.selectByExample(example);
         List<SpuBo> collect = spus.stream().map(spu -> {
             SpuBo spuBo = new SpuBo();
@@ -102,6 +103,10 @@ public class GoodsService {
         spuDetail.setSpuId(spuBo.getId());
         spuDetailMapper.insert(spuDetail);
         //将数据写入sku和stock表中
+        saveSkuAndStock(spuBo);
+    }
+
+    private void saveSkuAndStock(SpuBo spuBo) {
         spuBo.getSkus().forEach(sku -> {
             sku.setSpuId(spuBo.getId());
             sku.setCreateTime(spuBo.getCreateTime());
@@ -144,4 +149,32 @@ public class GoodsService {
         });
         return skus;
     }
+
+    /**
+     * 功能描述: 商品修改
+     * @param: [spuBo]
+     * @return: void
+     * @author: Bolon
+     * @date: 2019/12/23 21:05
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateGoods(SpuBo spuBo) {
+        Sku sku = new Sku();
+        sku.setSpuId(spuBo.getId());
+        List<Sku> skus = skuMapper.select(sku);
+        // 删除库存
+        skus.forEach(sku1 -> stockMapper.deleteByPrimaryKey(sku1.getId()));
+        // 删除sku
+        skuMapper.delete(sku);
+        // 新增sku
+        saveSkuAndStock(spuBo);
+        // 更新spu与spuDetail
+        spuBo.setCreateTime(null);
+        spuBo.setLastUpdateTime(new Date());
+        spuBo.setSaleable(null);
+        spuBo.setValid(null);
+        spuMapper.updateByPrimaryKeySelective(spuBo);
+        spuDetailMapper.updateByPrimaryKeySelective(spuBo.getSpuDetail());
+    }
+
 }
