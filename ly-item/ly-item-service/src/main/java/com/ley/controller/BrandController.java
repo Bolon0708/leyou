@@ -71,4 +71,20 @@ public class BrandController {
         }
         return ResponseEntity.ok(brands);
     }
+
+    /**
+     * 功能描述: 根据id列表查询品牌
+     * @param: [ids]
+     * @return: org.springframework.http.ResponseEntity<java.util.List<com.leu.item.pojo.Brand>>
+     * @author: Bolon
+     * @date: 2020/1/8 21:11
+     */
+    @GetMapping("list")
+    public ResponseEntity<List<Brand>> queryBrandByIds(@RequestParam("ids") List<Long> ids) {
+        List<Brand> brands = brandService.queryBrandByIds(ids);
+        if (CollectionUtils.isEmpty(brands)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(brands);
+    }
 }

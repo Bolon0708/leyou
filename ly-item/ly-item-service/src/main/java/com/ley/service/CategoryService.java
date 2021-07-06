@@ -39,7 +39,7 @@ public class CategoryService {
      * @author: Bolon
      * @date: 2019/12/21 17:20
      */
-    List<String> queryCategoryNamesByCid(List<Long> cids) {
+    public List<String> queryCategoryNamesByCid(List<Long> cids) {
         List<Category> categories = categoryMapper.selectByIdList(cids);
         return categories.stream().map(Category::getName).collect(Collectors.toList());
     }

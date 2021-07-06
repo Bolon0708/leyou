@@ -21,6 +21,7 @@
         <module>ly-item</module>
         <module>ly-common</module>
         <module>ly-upload</module>
+        <module>ly-search</module>
     </modules>
 
     <properties>
@@ -39,6 +40,7 @@
         <web.version>2.2.1.RELEASE</web.version>
         <actuator.version>2.2.1.RELEASE</actuator.version>
         <lombok.version>1.18.4</lombok.version>
+        <openfeign.version>2.2.0.RELEASE</openfeign.version>
     </properties>
 
     <dependencyManagement>
@@ -65,6 +67,12 @@
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${pageHelper.starter.version}</version>
+            </dependency>
+            <!-- feign依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${openfeign.version}</version>
             </dependency>
             <!-- mysql数据库版本为8.0.18，依赖版本应为8.0.11，不然会报错 -->
             <dependency>

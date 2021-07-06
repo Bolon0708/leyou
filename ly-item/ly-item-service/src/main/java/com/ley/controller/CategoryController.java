@@ -4,7 +4,6 @@ import com.leu.item.pojo.Category;
 import com.ley.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,5 +41,21 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(categories);
+    }
+
+    /**
+     * 功能描述: 根据id列表查询
+     * @param: [ids]
+     * @return: org.springframework.http.ResponseEntity<java.util.List<java.lang.String>>
+     * @author: Bolon
+     * @date: 2020/1/8 21:22
+     */
+    @GetMapping("names")
+    public ResponseEntity<List<String>> queryNameByIds(@RequestParam("ids") List<Long> ids) {
+        List<String> names = categoryService.queryCategoryNamesByCid(ids);
+        if (CollectionUtils.isEmpty(names)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(names);
     }
 }

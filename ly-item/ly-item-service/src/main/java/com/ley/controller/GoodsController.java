@@ -25,7 +25,6 @@ public class GoodsController {
     @Autowired
     private GoodsService goodsService;
 
-    @GetMapping("spu/page")
     /**
      * 功能描述: 分页查询商品列表
      * @param: [key, saleable, page, rows]
@@ -33,6 +32,7 @@ public class GoodsController {
      * @author: Bolon
      * @date: 2019/12/21 17:00
      */
+    @GetMapping("spu/page")
     public ResponseEntity<PageResult<SpuBo>> queryGoodsByPage(@RequestParam(value = "key", required = false) String key,
                                                               @RequestParam(value = "saleable", required = false) Boolean saleable,
                                                               @RequestParam(value = "page", defaultValue = "1") Integer page,

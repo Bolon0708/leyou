@@ -82,4 +82,15 @@ public class BrandService {
         );
         return brands;
     }
+
+    /**
+     * 功能描述: 根据id列表查询品牌
+     * @param: [ids]
+     * @return: java.util.List<com.leu.item.pojo.Brand>
+     * @author: Bolon
+     * @date: 2020/1/8 21:15
+     */
+    public List<Brand> queryBrandByIds(List<Long> ids) {
+        return brandMapper.selectByIdList(ids);
+    }
 }
